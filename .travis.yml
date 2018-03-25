@@ -1,0 +1,23 @@
+os:
+  - linux
+  - osx
+dist: trusty
+language: python
+python:
+  - "3.6"
+  - "nightly"
+  - "pypy3-nightly"
+before_install:
+  - echo "deb https://dl.bintray.com/kaitai-io/debian jessie main" | sudo tee /etc/apt/sources.list.d/kaitai.list
+  - sudo apt-key adv --keyserver hkp://pool.sks-keyservers.net --recv 379CE192D401AB61
+  - sudo apt-get update
+  - sudo apt-get install kaitai-struct-compiler
+  - pip3 install GitPython
+  - pip3 install --upgrade setuptools
+  - pip3 install coveralls setuptools_scm
+install:
+  - pip install --upgrade ./
+script:
+  - coverage run --source=alternatives setup.py test
+after_success:
+  - coveralls
